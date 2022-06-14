@@ -9,8 +9,8 @@ import java.util.List;
 
 public class UserDaoJDBCImpl implements UserDao {
 
-    Connection conn = Util.getConnect();
-    private static final String createUsersTableSql = "CREATE TABLE IF NOT EXISTS USERS (id INT PRIMARY KEY AUTO_INCREMENT, name VARCHAR(255), lastName VARCHAR(255), age TINYINT)";
+    private static final Connection conn = Util.getConnect();
+    private static final String createUsersTableSql = "CREATE TABLE IF NOT EXISTS USERS (id INT PRIMARY KEY AUTO_INCREMENT, name VARCHAR(50), lastName VARCHAR(255), age TINYINT)";
     private static final String dropUsersTableSql = "DROP TABLE IF EXISTS USERS";
     private static final String saveUserSql = "INSERT INTO USERS (name, lastname, age) VALUES (?, ?, ?)";
     private static final String removeUserByIdSql = "DELETE FROM USERS WHERE  ? ";
