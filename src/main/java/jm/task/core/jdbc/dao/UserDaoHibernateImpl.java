@@ -12,7 +12,7 @@ public class UserDaoHibernateImpl implements UserDao {
 
     }
 
-    private static final String createUsersTableSql = "CREATE TABLE IF NOT EXISTS USERS (id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY, name VARCHAR(255), lastName VARCHAR(255), age TINYINT)";
+    private static final String createUsersTableSql = "CREATE TABLE IF NOT EXISTS USERS (id INT NOT NULL AUTO_INCREMENT PRIMARY KEY, name VARCHAR(255), lastName VARCHAR(255), age TINYINT)";
     private static final String dropUsersTableSql = "DROP TABLE IF EXISTS USERS";
     private static final String cleanUsersTableSql = "TRUNCATE TABLE USERS";
 
