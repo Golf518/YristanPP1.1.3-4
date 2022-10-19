@@ -1,5 +1,6 @@
 package jm.task.core.jdbc.dao;
 
+import jakarta.persistence.TypedQuery;
 import jm.task.core.jdbc.model.User;
 import jm.task.core.jdbc.util.Util;
 import org.hibernate.Session;
@@ -8,7 +9,10 @@ import org.hibernate.Transaction;
 import java.util.List;
 
 public class UserDaoHibernateImpl implements UserDao {
+    private Session session = null;
+    private Transaction transaction = null;
     public UserDaoHibernateImpl() {
+        session = Util.getSessionFactory().openSession();
 
     }
 
@@ -18,8 +22,8 @@ public class UserDaoHibernateImpl implements UserDao {
 
     @Override
     public void createUsersTable() {
-        Transaction transaction;
-        try (Session session = Util.getSessionFactory().openSession()) {
+
+        try {
             transaction = session.beginTransaction();
             session.createNativeMutationQuery(createUsersTableSql).executeUpdate();
             transaction.commit();
@@ -29,8 +33,8 @@ public class UserDaoHibernateImpl implements UserDao {
 
     @Override
     public void dropUsersTable() {
-        Transaction transaction;
-        try (Session session = Util.getSessionFactory().openSession()) {
+
+        try {
             transaction = session.beginTransaction();
             session.createNativeMutationQuery(dropUsersTableSql).executeUpdate();
             transaction.commit();
@@ -41,8 +45,8 @@ public class UserDaoHibernateImpl implements UserDao {
     @Override
     public void saveUser(String name, String lastName, byte age) {
         User user = new User(name, lastName, age);
-        Transaction transaction;
-        try (Session session = Util.getSessionFactory().openSession()) {
+
+        try {
             transaction = session.beginTransaction();
             session.persist(user);
             transaction.commit();
@@ -53,8 +57,8 @@ public class UserDaoHibernateImpl implements UserDao {
 
     @Override
     public void removeUserById(long id) {
-        Transaction transaction;
-        try (Session session = Util.getSessionFactory().openSession()) {
+
+        try {
             transaction = session.beginTransaction();
             session.remove(session.get(User.class, id));
             transaction.commit();
@@ -64,22 +68,22 @@ public class UserDaoHibernateImpl implements UserDao {
 
     @Override
     public List<User> getAllUsers() {
-        Transaction transaction;
-        List<User> users = null;
-        try (Session session = Util.getSessionFactory().openSession()) {
+
+        TypedQuery<User> users = null;
+        try {
             transaction = session.beginTransaction();
-            users = session.createQuery("from User", User.class).list();
+            users = session.createQuery("from User", User.class);
             transaction.commit();
             System.out.println(users);
         } catch (Exception ignored) {
         }
-        return users;
+        return (List<User>) users;
     }
 
     @Override
     public void cleanUsersTable() {
-        Transaction transaction;
-        try (Session session = Util.getSessionFactory().openSession()) {
+
+        try {
             transaction = session.beginTransaction();
             session.createNativeMutationQuery(cleanUsersTableSql).executeUpdate();
             transaction.commit();
